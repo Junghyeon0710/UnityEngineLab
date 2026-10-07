@@ -7,6 +7,7 @@ Unity 엔진의 기능과 C#을 공부하고, 관련 내용을 기록하는 저�
 ## Unity
 
 - [유니티 설치방법](Docs/Unity/Installation.md)
+- [유니티 인터페이스와 조작법](Docs/Unity/InterfaceAndControls.md)
 
 ## 프로젝트 구성
 
