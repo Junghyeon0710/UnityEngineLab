@@ -1,0 +1,532 @@
+# 유니티 C# 프로그래밍 기초
+
+C#으로 게임 데이터를 저장하고, 조건에 따라 판단하고, 반복되는 작업과 기능을 묶는 방법을 정리한다. 용사의 레벨·체력·아이템과 몬스터 목록을 예시로 사용한다.
+
+**변수 → 배열·리스트 → 연산자 → 키워드 → 조건문 → 반복문 → 함수 → 클래스·상속** 순서로 익힌다.
+
+짧은 코드 블록은 각 문법을 설명하는 부분 예제다. 전체를 실행해 보려면 [실습 예제](#practice)의 파일 세 개를 사용한다. 수치와 이름은 문법 연습을 위한 예시다.
+
+<a id="contents"></a>
+
+## 목차
+
+1. [변수와 주석](#variables)
+2. [배열과 리스트](#collections)
+3. [연산자](#operators)
+4. [키워드](#keywords)
+5. [조건문](#conditions)
+6. [반복문](#loops)
+7. [함수와 변수의 범위](#methods)
+8. [클래스·접근자·상속](#classes)
+9. [Unity에서 실습하기](#practice)
+
+---
+
+<a id="variables"></a>
+
+## 1. 변수와 주석
+
+변수는 값을 저장하고 이름으로 다시 사용하는 공간이다. **자료형과 이름을 정하는 선언**, **처음 값을 넣는 초기화**, **이름으로 값을 읽거나 변경하는 사용**을 구분한다.
+
+```csharp
+int level = 5;
+float strength = 15.5f;
+string playerName = "검사";
+bool isFullLevel = false;
+
+Debug.Log(level);
+Debug.Log(playerName);
+```
+
+| 자료형 | 저장하는 값 | 예시 |
+| --- | --- | --- |
+| int | 정수 | 레벨, 아이템 개수 |
+| float | 소수점을 포함하는 숫자 | 힘, 이동 속도 |
+| string | 문자열 | 이름, 대사 |
+| bool | true 또는 false | 만렙 여부, 조건 판단 결과 |
+
+`float` 숫자 리터럴에는 `f`를 붙인다. `string` 값은 큰따옴표로 감싸고, `bool`에는 `true` 또는 `false`를 사용한다.
+
+```csharp
+int level;   // 선언
+level = 5;   // 값 대입
+Debug.Log(level); // 값 사용
+
+// 이 줄은 메모이며 실행되지 않는다.
+```
+
+`//` 뒤에 쓴 내용은 한 줄 주석이다. 변수의 목적이나 확인할 내용을 기록할 때 사용한다. 메서드 안의 지역 변수는 값을 넣은 뒤 읽어야 한다.
+
+---
+
+<a id="collections"></a>
+
+## 2. 배열과 리스트
+
+여러 몬스터 이름이나 아이템을 관리할 때는 같은 자료형의 값을 묶어서 저장한다.
+
+### 배열: 정해진 개수의 값을 저장
+
+자료형 뒤에 `[]`를 붙여 선언하고, 중괄호 안에 초기값을 나열한다.
+
+```csharp
+string[] monsters = { "슬라임", "사막뱀", "악마" };
+Debug.Log(monsters[0]); // 슬라임
+
+int[] monsterLevels = new int[3];
+monsterLevels[0] = 1;
+monsterLevels[1] = 6;
+monsterLevels[2] = 20;
+```
+
+배열의 첫 인덱스는 **0**이다. 길이가 3인 배열에서는 `0`, `1`, `2`를 사용한다. `new int[3]`은 정수 세 개를 저장할 배열을 만들며, 처음 각 값은 0이다.
+
+### List: 항목 추가와 삭제
+
+리스트는 항목을 추가하거나 삭제하며 사용하는 컬렉션이다. 파일 위쪽에 다음 네임스페이스를 가져온다.
+
+```csharp
+using System.Collections.Generic;
+```
+
+`List<T>`의 `T`에는 저장할 자료형을 넣는다.
+
+```csharp
+List<string> items = new List<string>();
+items.Add("생명물약");
+items.Add("마나물약");
+
+items.RemoveAt(0);
+Debug.Log(items[0]); // 마나물약
+Debug.Log(items.Count); // 1
+```
+
+![0부터 시작하는 배열 인덱스와 리스트 삭제 후 인덱스 변화](Images/csharp-collections.svg)
+
+`RemoveAt(0)`으로 첫 항목을 삭제하면 뒤의 항목이 앞으로 이동한다. 이때 남은 마나물약의 인덱스는 0이다.
+
+| 구분 | 배열 | List |
+| --- | --- | --- |
+| 생성 | `new int[3]` | `new List<int>()` |
+| 항목 수 | `Length` | `Count` |
+| 항목 접근 | `monsters[index]` | `items[index]` |
+| 크기 관리 | 만들어진 배열 인스턴스의 길이는 고정 | Add·RemoveAt 등으로 항목 수 변경 |
+
+사용 가능한 인덱스는 `0 이상, 항목 수 미만`이다. 삭제 후 항목이 하나인데 `items[1]`을 읽으면 범위를 벗어난다. 배열의 범위 초과는 `IndexOutOfRangeException`, 리스트의 범위 초과는 `ArgumentOutOfRangeException`으로 나타난다.
+
+---
+
+<a id="operators"></a>
+
+## 3. 연산자
+
+### 숫자 계산과 문자열 연결
+
+```csharp
+int exp = 1500;
+exp = exp + 320;
+exp = exp - 10;
+int level = exp / 300;
+float strength = level * 3.1f;
+int nextExp = 300 - (exp % 300);
+
+Debug.Log(exp);     // 1810
+Debug.Log(level);   // 6
+Debug.Log(nextExp); // 290
+
+string title = "전설의";
+string playerName = "검사";
+Debug.Log(title + " " + playerName); // 전설의 검사
+```
+
+| 연산자 | 역할 |
+| --- | --- |
+| + | 덧셈, 문자열 연결 |
+| - | 뺄셈 |
+| * | 곱셈 |
+| / | 나눗셈 |
+| % | 나눈 뒤의 나머지 |
+
+`int / int`의 결과는 정수다. 이 예제에서 `1810 / 300`은 6, `1810 % 300`은 10이다. 다음 구간까지 필요한 경험치는 `300 - 10`, 즉 290이다. `%`가 반환하는 것은 나머지이고, 다음 구간까지 필요한 양은 추가 계산으로 구한다.
+
+`float`는 소수를 근사값으로 저장한다. 위 힘 계산의 결과는 대략 18.6이며, 실행 환경의 문자열 표시 방식에 따라 `18.599998`처럼 보일 수 있다.
+
+### 비교 연산
+
+비교 결과는 `bool`이다. `=`는 대입이고 `==`는 같은지 비교한다.
+
+| 연산자 | 의미 |
+| --- | --- |
+| == | 같음 |
+| != | 다름 |
+| > | 초과 |
+| < | 미만 |
+| >= | 이상 |
+| <= | 이하 |
+
+```csharp
+bool isFullLevel = level == 99;
+bool isTutorialOver = level > 10;
+```
+
+### 논리 연산과 삼항 연산
+
+`&&`는 두 조건이 모두 참일 때 참이고, `||`는 하나라도 참일 때 참이다.
+
+```csharp
+int health = 30;
+int mana = 25;
+
+bool bothLow = health <= 50 && mana <= 20; // false
+bool isBadCondition = health <= 50 || mana <= 20; // true
+string condition = isBadCondition ? "나쁨" : "좋음";
+```
+
+삼항 연산자는 `조건 ? 참일 때 값 : 거짓일 때 값`으로 쓴다. 위 예제의 `condition`에는 `"나쁨"`이 들어간다.
+
+`&&`는 왼쪽이 거짓이면 오른쪽을 평가하지 않는다. 이 성질을 이용해 `items.Count > 0 && items[0] == "생명물약"`처럼 개수를 먼저 확인할 수 있다.
+
+---
+
+<a id="keywords"></a>
+
+## 4. 키워드
+
+키워드는 C#에서 문법적으로 특별한 의미를 가지는 단어다. `int`, `float`, `string`, `bool`, `new`, `if`, `class`, `return` 등이 있다. 예약어는 일반적인 변수 이름으로 사용할 수 없다.
+
+코드 편집기에서 색이 다르다고 모두 키워드인 것은 아니다. **List는 .NET의 클래스 이름**, **Debug는 Unity의 클래스 이름**이다. `true`와 `false`는 `bool` 값을 표현하는 키워드다.
+
+```csharp
+int health = 30;
+List<string> items = new List<string>();
+```
+
+이 코드에서는 `int`와 `new`가 키워드이며, `health`와 `items`는 직접 정한 이름이다.
+
+---
+
+<a id="conditions"></a>
+
+## 5. 조건문
+
+### if·else if·else
+
+조건이 참이면 `if` 블록을 실행한다. 거짓이면 다음 `else if` 조건을 확인하고, 맞는 조건이 없으면 `else`를 실행한다. 연결된 조건문에서는 처음 참이 된 분기 하나가 실행된다.
+
+```csharp
+if (isBadCondition && items.Count > 0 && items[0] == "생명물약")
+{
+    health += 30;
+    items.RemoveAt(0);
+    Debug.Log("생명물약을 사용했습니다.");
+}
+else if (isBadCondition && items.Count > 0 && items[0] == "마나물약")
+{
+    mana += 30;
+    items.RemoveAt(0);
+    Debug.Log("마나물약을 사용했습니다.");
+}
+else
+{
+    Debug.Log("사용할 물약이 없습니다.");
+}
+```
+
+이 예제는 앞에서 만든 변수와 리스트를 사용한다. `items[0]`을 확인하기 전에 `Count > 0`을 검사해 빈 리스트 접근을 막는다. `+= 30`은 현재 값에 30을 더해 다시 저장한다.
+
+### switch·case·default
+
+하나의 값을 여러 후보와 비교할 때는 `switch`를 사용한다.
+
+```csharp
+switch (monsters[1])
+{
+    case "슬라임":
+    case "사막뱀":
+        Debug.Log("소형 몬스터");
+        break;
+    case "악마":
+        Debug.Log("중형 몬스터");
+        break;
+    case "골렘":
+        Debug.Log("대형 몬스터");
+        break;
+    default:
+        Debug.Log("알 수 없는 크기");
+        break;
+}
+```
+
+`case`는 값이 일치하는 분기, `default`는 일치하는 `case`가 없을 때의 분기다. 위 코드의 `break`는 `switch`를 빠져나간다. 슬라임과 사막뱀처럼 같은 처리를 할 값은 실행 코드 앞에 `case`를 나란히 놓을 수 있다.
+
+---
+
+<a id="loops"></a>
+
+## 6. 반복문
+
+### while: 조건이 참인 동안 반복
+
+```csharp
+int health = 30;
+while (health > 0)
+{
+    health--;
+    if (health == 10)
+        break;
+}
+Debug.Log(health); // 10
+```
+
+반복할 때마다 `health--`로 체력을 1 줄인다. 체력이 10이 되면 `break`로 반복을 종료한다. `break`는 자신을 감싼 가장 가까운 반복문 또는 `switch`를 빠져나간다.
+
+이 예제는 한 번의 호출 안에서 20회를 연속 처리한다. 실제 게임에서 일정 시간마다 독 피해를 주려면 시간 제어를 별도로 구현한다. 조건이 계속 참인 반복문은 종료 조건이나 값 변화가 있어야 한다.
+
+### for: 초기화·조건·증감
+
+```csharp
+for (int count = 0; count < 10; count++)
+{
+    health++;
+}
+Debug.Log(health); // 앞의 체력 10에서 시작하면 20
+```
+
+`for (초기화; 조건; 증감)` 순서로 작성한다. 초기화는 처음 한 번, 조건 검사는 매 반복 전에, 증감은 각 반복이 끝난 뒤 실행한다. `count`가 0부터 9까지 사용되므로 총 10번 반복한다.
+
+### 배열 탐색과 foreach
+
+```csharp
+for (int index = 0; index < monsters.Length; index++)
+{
+    Debug.Log(monsters[index]);
+}
+
+foreach (string monster in monsters)
+{
+    Debug.Log(monster);
+}
+```
+
+배열은 `Length`, 리스트는 `Count`로 반복 범위를 정한다. `index < 항목 수`로 쓰면 마지막 유효 인덱스까지만 접근한다.
+
+`foreach`는 컬렉션에서 항목을 하나씩 가져온다. 각 항목을 읽어 처리하는 작업에는 인덱스 없이 간결하게 쓸 수 있다. 일반적인 List 탐색 중에 항목을 추가·삭제하면 열거가 무효화될 수 있으므로, 삭제 로직은 별도로 설계한다.
+
+---
+
+<a id="methods"></a>
+
+## 7. 함수와 변수의 범위
+
+여러 줄의 동작을 묶어 이름으로 호출하는 단위를 메서드라고 한다. C# 클래스에 작성하는 함수는 메서드이며, `Start()`도 그중 하나다.
+
+### 값을 받고 반환하기
+
+```csharp
+private int Heal(int currentHealth)
+{
+    return currentHealth + 10;
+}
+```
+
+- `int` — 반환하는 값의 자료형
+- `Heal` — 메서드 이름
+- `currentHealth` — 호출할 때 받는 매개변수
+- `return` — 계산한 결과를 호출한 곳에 돌려주는 문장
+
+호출할 때는 다음처럼 반환값을 변수에 대입한다.
+
+```csharp
+health = Heal(health);
+```
+
+`int`는 이 예제에서 값으로 전달된다. 매개변수의 이름은 전달하는 변수 이름과 달라도 된다. `Heal(health)`의 결과를 저장해야 호출한 쪽의 `health`가 바뀐다.
+
+메서드 정의는 `Start()` 바깥의 클래스 본문에 두고, 호출 코드는 `Start()` 안에 넣는다.
+
+### void와 멤버 변수
+
+반환할 값이 없는 메서드는 `void`로 선언한다. 같은 클래스의 필드를 직접 바꾸는 방식도 가능하다.
+
+```csharp
+public class CSharpBasicsDemo : MonoBehaviour
+{
+    private int health = 30;
+
+    private void Start()
+    {
+        Heal();
+        Debug.Log(health); // 40
+    }
+
+    private void Heal()
+    {
+        health += 10;
+    }
+}
+```
+
+| 구분 | 선언 위치와 사용 범위 |
+| --- | --- |
+| 지역 변수 | 메서드나 블록 안에 선언한다. 해당 범위에서 사용한다. |
+| 매개변수 | 메서드가 호출될 때 값을 받으며 해당 메서드에서 사용한다. |
+| 멤버 변수·필드 | 클래스 본문에 선언한다. 같은 인스턴스의 메서드들이 접근자 규칙에 따라 사용한다. |
+
+`Start()` 안에 선언한 지역 변수는 다른 메서드에서 바로 사용할 수 없다. 체력을 클래스 본문에 필드로 선언하면 같은 클래스의 `Start()`와 `Heal()`이 함께 사용할 수 있다. 이 경우 정확한 명칭은 클래스의 필드이며, 외부에서 접근할 수 있는지는 접근자가 결정한다.
+
+### 반복문에서 메서드 호출
+
+```csharp
+private string Battle(int monsterLevel)
+{
+    if (level >= monsterLevel)
+        return "승리";
+    return "패배";
+}
+```
+
+```csharp
+for (int index = 0; index < monsters.Length; index++)
+{
+    Debug.Log(monsters[index] + ": " + Battle(monsterLevels[index]));
+}
+```
+
+몬스터 이름과 레벨 배열의 길이를 맞춘 뒤, 같은 인덱스로 이름과 레벨을 읽는다. 반복·조건·메서드를 조합해 각 몬스터와의 결과를 계산한다.
+
+---
+
+<a id="classes"></a>
+
+## 8. 클래스·접근자·상속
+
+### 클래스와 인스턴스
+
+클래스는 데이터와 동작을 하나의 자료형으로 묶는다. 일반 C# 클래스는 `new`로 인스턴스를 만들어 사용할 수 있다.
+
+```csharp
+// Actor.cs
+public class Actor
+{
+    public string Name = "이름 없음";
+    public int Level = 1;
+    private string greeting = "안녕하세요";
+
+    public string Talk()
+    {
+        return Name + ": " + greeting;
+    }
+
+    public void LevelUp()
+    {
+        Level++;
+    }
+}
+```
+
+```csharp
+Actor actor = new Actor();
+actor.Name = "검사";
+actor.Level = 5;
+actor.LevelUp();
+Debug.Log(actor.Level); // 6
+Debug.Log(actor.Talk());
+```
+
+`Actor`는 클래스이고, `new Actor()`로 만든 객체는 인스턴스다. 인스턴스 변수 뒤의 `.`으로 공개된 필드나 메서드에 접근한다.
+
+### public과 private
+
+| 접근자 | 이 예제에서의 의미 |
+| --- | --- |
+| public | 외부 코드에서 접근할 수 있도록 공개한다. |
+| private | 선언한 클래스 내부에서 사용한다. |
+
+클래스의 필드나 메서드에 접근자를 생략하면 기본 접근성은 `private`다. `actor.Name`은 공개된 필드라 사용할 수 있고, `greeting`은 Actor 내부의 `Talk()`에서 사용한다.
+
+### 상속
+
+클래스 이름 뒤에 `: 부모클래스`를 붙여 상속 관계를 만든다.
+
+```csharp
+// Player.cs
+public class Player : Actor
+{
+    public string Move()
+    {
+        return Name + "가 이동합니다.";
+    }
+}
+```
+
+```csharp
+Player player = new Player();
+player.Name = "검사";
+player.LevelUp();
+Debug.Log(player.Talk());
+Debug.Log(player.Move());
+```
+
+![Actor에서 Player로, MonoBehaviour에서 CSharpBasicsDemo로 이어지는 상속 구조](Images/csharp-inheritance.svg)
+
+Player는 Actor의 공개된 `Name`, `Level`, `Talk()`, `LevelUp()`을 사용하면서 `Move()`를 추가한다. 부모의 `private` 멤버에는 자식 클래스가 직접 접근할 수 없지만, 부모가 제공한 메서드는 그 멤버를 사용할 수 있다.
+
+Unity 스크립트의 `public class CSharpBasicsDemo : MonoBehaviour`도 상속 선언이다. `MonoBehaviour`를 상속한 컴포넌트는 GameObject에 붙여 사용한다. 여기의 Actor·Player는 일반 C# 객체로 사용한다.
+
+---
+
+<a id="practice"></a>
+
+## 9. Unity에서 실습하기
+
+문법을 연결한 예제를 다음 파일 세 개로 정리했다.
+
+- [CSharpBasicsDemo.cs](Examples/CSharpBasics/CSharpBasicsDemo.cs) — 변수부터 반복·함수·상속까지 실행하는 컴포넌트
+- [Actor.cs](Examples/CSharpBasics/Actor.cs) — 데이터와 동작을 가진 일반 클래스
+- [Player.cs](Examples/CSharpBasics/Player.cs) — Actor를 상속하는 일반 클래스
+
+1. 세 파일을 Unity 프로젝트의 `Assets` 아래에 같은 폴더로 복사한다.
+2. 스크립트 컴파일이 끝나면 빈 GameObject를 만든다.
+3. 그 GameObject에 `CSharpBasicsDemo`를 컴포넌트로 추가한다.
+4. Play를 누르고 Console에서 순서대로 출력되는 내용을 확인한다.
+
+Actor와 Player는 `new`로 사용하는 일반 클래스다. GameObject에는 `CSharpBasicsDemo`를 붙인다. 이 예제는 Console로 C# 문법을 확인하는 용도이며, 캐릭터 이동 함수도 이동을 설명하는 문자열을 반환한다.
+
+### 직접 작성한 예제 실행 결과
+
+![직접 작성한 C# 예제를 콘솔 환경에서 실행한 결과](Images/csharp-example-output.png)
+
+위 화면은 저장소의 예제 코드를 .NET 콘솔 환경에서 실행해 얻은 로그를 정리한 것이다. 검증용 환경에서는 `MonoBehaviour`를 빈 기반 클래스로, `Debug.Log`를 콘솔 출력으로 대체했다. C# 7.3 문법으로 컴파일해 오류·경고 없이 통과했고, 로그의 수치와 분기 결과를 확인했다. Unity Editor에서의 컴포넌트 실행은 별도로 확인해야 한다.
+
+| 확인할 결과 | 예제 결과 |
+| --- | --- |
+| 첫 리스트 항목 삭제 | 마나물약이 인덱스 0, Count는 1 |
+| 경험치 계산 | 1810, 레벨 6, 다음 레벨까지 290 |
+| 논리 연산 | AND는 false, OR는 true |
+| while 종료와 for 반복 | 체력 10에서 종료, 붕대 10회 후 체력 20 |
+| Heal의 반환값과 멤버 변수 변경 | 체력 30, 이어서 40 |
+| 몬스터 레벨 비교 | 슬라임·사막뱀 승리, 악마 패배 |
+| 부모 메서드 사용 | LevelUp 실행 후 Player의 레벨 7 |
+
+이후에는 아이템 목록, 비교 조건, 반복 횟수를 바꾸며 출력 결과를 예상한 뒤 확인해 본다.
+
+---
+
+## 이미지와 문법 참고 자료
+
+배열·리스트와 상속 구조도, 예제 실행 결과 화면은 이 문서를 위해 직접 만들었다. 구조도는 설명용이고, 실행 결과 화면은 직접 작성한 코드의 실제 로그를 사용했다.
+
+다음 공식 자료는 문법과 용어를 확인하는 보충 자료다.
+
+- [C# 배열](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/arrays)
+- [List<T>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1)
+- [산술 연산자](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/arithmetic-operators)
+- [C# 키워드](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/)
+- [메서드](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/methods)
+- [접근자](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers)
+- [상속](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/inheritance)
+- [Unity의 Start](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html)
+
+---
+
+[목차로 돌아가기](#contents) · [메인 README로 돌아가기](../../README.md#unity)

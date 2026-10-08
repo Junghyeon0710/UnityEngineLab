@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="490" viewBox="0 0 920 490" role="img" aria-label="배열 인덱스와 리스트 삭제 변화">
+<style>text{font-family:"Malgun Gothic","Segoe UI",sans-serif;fill:#223042}.title{font-size:28px;font-weight:700}.sub{font-size:18px;fill:#526171}.label{font-size:19px;font-weight:600}.body{font-size:19px}.small{font-size:17px;fill:#526171}.code{font-family:Consolas,"Malgun Gothic",monospace;font-size:20px;fill:#1163ae}.box{fill:#f7fafc;stroke:#b9c9d9;stroke-width:1.5}</style><rect width="920" height="490" rx="16" fill="#fff"/>
+<text x="36" y="47" class="title">배열은 0부터, 리스트는 삭제 후 재배치</text>
+<text x="36" y="88" class="sub">string[] monsters · Length = 3</text>
+<rect x="36" y="110" width="260" height="92" rx="10" class="box"/><rect x="320" y="110" width="260" height="92" rx="10" class="box"/><rect x="604" y="110" width="280" height="92" rx="10" class="box"/>
+<text x="58" y="143" class="code">[0]</text><text x="58" y="179" class="body">슬라임</text>
+<text x="342" y="143" class="code">[1]</text><text x="342" y="179" class="body">사막뱀</text>
+<text x="626" y="143" class="code">[2]</text><text x="626" y="179" class="body">악마</text>
+<text x="36" y="244" class="sub">List&lt;string&gt; items · RemoveAt(0)</text>
+<text x="36" y="284" class="label">삭제 전 · Count = 2</text><text x="566" y="284" class="label">삭제 후 · Count = 1</text>
+<rect x="36" y="303" width="185" height="96" rx="10" fill="#fff3f1" stroke="#d99e97"/>
+<rect x="239" y="303" width="185" height="96" rx="10" class="box"/>
+<text x="54" y="337" class="code">[0] 삭제</text><text x="54" y="373" class="body">생명물약</text>
+<text x="257" y="337" class="code">[1]</text><text x="257" y="373" class="body">마나물약</text>
+<path d="M445 350 H530" stroke="#1163ae" stroke-width="3"/><path d="M516 341 L530 350 L516 359" fill="none" stroke="#1163ae" stroke-width="3"/>
+<rect x="566" y="303" width="318" height="96" rx="10" fill="#edf6ff" stroke="#75aade"/>
+<text x="588" y="337" class="code">[0]</text><text x="588" y="373" class="body">마나물약</text>
+<text x="36" y="449" class="small">유효 인덱스: 0 이상, 항목 수 미만 · 삭제 후 items[1]은 범위를 벗어남</text>
+</svg>
