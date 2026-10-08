@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="920" height="500" viewBox="0 0 920 500" role="img" aria-label="일반 클래스와 Unity 컴포넌트의 상속 구조">
-<style>text{font-family:"Malgun Gothic","Segoe UI",sans-serif;fill:#223042}.title{font-size:28px;font-weight:700}.sub{font-size:18px;fill:#526171}.label{font-size:19px;font-weight:600}.body{font-size:19px}.small{font-size:17px;fill:#526171}.code{font-family:Consolas,"Malgun Gothic",monospace;font-size:20px;fill:#1163ae}.box{fill:#f7fafc;stroke:#b9c9d9;stroke-width:1.5}</style><rect width="920" height="500" rx="16" fill="#fff"/>
-<text x="36" y="47" class="title">부모의 기능을 사용하고, 자식의 기능을 추가</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="500" viewBox="0 0 920 500" role="img" aria-label="배송 주문과 Unity 컴포넌트의 상속 구조">
+<style>text{font-family:"Malgun Gothic","Segoe UI",sans-serif;fill:#223042}.title{font-size:28px;font-weight:700}.sub{font-size:18px;fill:#526171}.label{font-size:19px;font-weight:600}.body{font-size:18px}.small{font-size:17px;fill:#526171}.code{font-family:Consolas,"Malgun Gothic",monospace;font-size:18px;fill:#1163ae}.box{fill:#f7fafc;stroke:#b9c9d9;stroke-width:1.5}</style><rect width="920" height="500" rx="16" fill="#fff"/>
+<text x="36" y="47" class="title">기본 배송 주문에 우선 출고 기능을 추가</text>
 <text x="36" y="91" class="label">일반 C# 객체</text><text x="500" y="91" class="label">Unity 컴포넌트</text>
 <rect x="36" y="111" width="384" height="120" rx="10" class="box"/>
-<text x="58" y="145" class="code">Actor</text><text x="58" y="180" class="body">Name · Level</text><text x="58" y="211" class="body">Talk() · LevelUp()</text>
+<text x="58" y="145" class="code">ShipmentOrder</text><text x="58" y="180" class="body">Destination · BoxCount</text><text x="58" y="211" class="body">GetSummary() · AddBox()</text>
 <rect x="500" y="111" width="384" height="120" rx="10" class="box"/>
 <text x="522" y="145" class="code">MonoBehaviour</text><text x="522" y="184" class="body">Unity 컴포넌트의 기반 클래스</text>
 <path d="M228 240 V298" stroke="#1163ae" stroke-width="3"/><path d="M219 284 L228 298 L237 284" fill="none" stroke="#1163ae" stroke-width="3"/>
@@ -11,8 +11,8 @@
 <path d="M692 240 V298" stroke="#1163ae" stroke-width="3"/><path d="M683 284 L692 298 L701 284" fill="none" stroke="#1163ae" stroke-width="3"/>
 <text x="714" y="277" class="small">상속</text>
 <rect x="36" y="308" width="384" height="112" rx="10" fill="#edf6ff" stroke="#75aade"/>
-<text x="58" y="344" class="code">Player : Actor</text><text x="58" y="382" class="body">Move() 추가</text>
+<text x="58" y="344" class="code">PriorityShipment : ShipmentOrder</text><text x="58" y="382" class="body">GetServiceNotice() 추가</text>
 <rect x="500" y="308" width="384" height="112" rx="10" fill="#edf6ff" stroke="#75aade"/>
-<text x="522" y="344" class="code">CSharpBasicsDemo</text><text x="522" y="382" class="body">Start()에 실습 코드 작성</text>
-<text x="36" y="461" class="small">new Player()로 인스턴스 생성</text><text x="500" y="461" class="small">GameObject에 컴포넌트로 추가</text>
+<text x="522" y="344" class="code">WarehouseBasicsDemo</text><text x="522" y="382" class="body">Start()에 배송 작업 예제 작성</text>
+<text x="36" y="461" class="small">new로 객체 생성</text><text x="500" y="461" class="small">GameObject에 컴포넌트로 추가</text>
 </svg>
