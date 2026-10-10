@@ -10,6 +10,7 @@ Unity 엔진의 기능과 C#을 공부하고, 관련 내용을 기록하는 저�
 - [유니티 인터페이스와 조작법](Docs/Unity/InterfaceAndControls.md)
 - [유니티 C# 프로그래밍 기초](Docs/Unity/CSharpBasics.md)
 - [유니티 게임오브젝트 생명주기](Docs/Unity/GameObjectLifecycle.md)
+- [유니티 uGUI 기초](Docs/Unity/UGUIBasics.md)
 
 ## 프로젝트 구성
 
